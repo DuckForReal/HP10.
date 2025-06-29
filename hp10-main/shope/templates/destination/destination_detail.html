@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ destination.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'destination:destination_list' %}">Destinations</a></li>
+            <li class="breadcrumb-item active">{{ destination.name }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <img src="{{ destination.image.url }}" class="img-fluid rounded" alt="{{ destination.name }}">
+        </div>
+        <div class="col-md-4">
+            <h1 class="mb-3">{{ destination.name }}</h1>
+            <p class="text-muted">
+                <i class="fas fa-map-marker-alt"></i> {{ destination.location }}
+            </p>
+            <p class="text-muted">
+                <i class="fas fa-clock"></i> Best time to visit: {{ destination.best_time_to_visit }}
+            </p>
+            
+            {% comment %} {% if user.is_authenticated %} {% endcomment %}
+            <div class="mb-4">
+                <a href="{% url 'destination:destination_edit' destination.slug %}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="{% url 'destination:destination_delete' destination.slug %}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </div>
+            {% comment %} {% endif %} {% endcomment %}
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <h3>Mô tả</h3>
+            <p>{{ destination.description|linebreaks }}</p>
+
+            <h3>Các hoạt động</h3>
+            <ul class="list-group">
+                {% for activity in destination.get_activities_list %}
+                <li class="list-group-item">
+                    <i class="fas fa-check text-success"></i> {{ activity }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

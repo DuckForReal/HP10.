@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Destinations{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Địa điểm du lịch</h1>
+        {% comment %} {% if user.is_authenticated %} {% endcomment %}
+        <a href="{% url 'destination:destination_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm địa điểm
+        </a>
+        {% comment %} {% endif %} {% endcomment %}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for destination in destinations %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ destination.name }}</h5>
+                    <p class="card-text text-muted">
+                        <i class="fas fa-map-marker-alt"></i> {{ destination.location }}
+                    </p>
+                    <p class="card-text">{{ destination.description|truncatewords:30 }}</p>
+                    <a href="{% url 'destination:destination_detail' destination.slug %}" class="btn btn-outline-primary">
+                        Chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No destinations available yet.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
